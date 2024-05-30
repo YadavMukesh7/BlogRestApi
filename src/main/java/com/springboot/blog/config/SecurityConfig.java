@@ -28,19 +28,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableMethodSecurity(securedEnabled = true)
 @EnableWebMvc
 public class SecurityConfig {
-    public static final String[] PUBLIC_URLS = {
-            "/api/v1/auth/**",
-            "/upload",
-            "/download/**",
-            "/v3/api-docs",
-            "/v2/api-docs",
-            "/v3/api-docs/swagger-config",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui/**",
-            "/webjars/**",
-    };
+    public static final String[] PUBLIC_URLS = {"/api/v1/auth/**", "/upload", "/download/**", "/v3/api-docs", "/v2/api-docs", "/v3/api-docs/swagger-config", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**", "/webjars/**",};
     @Autowired
     private CustomUserDetailsService userDetailsService;
     @Autowired
@@ -54,17 +42,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-                .csrf().disable()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                        .requestMatchers(PUBLIC_URLS).permitAll()
-                        .anyRequest().authenticated()
-                ).exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                ).sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+        http.csrf((csrf) -> csrf.disable()).authorizeHttpRequests((requests) -> requests.requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll().requestMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated()).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

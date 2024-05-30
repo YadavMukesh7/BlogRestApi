@@ -1,12 +1,10 @@
 package com.springboot.blog.controller;
 
-import com.springboot.blog.entity.Comment;
 import com.springboot.blog.payload.CommentDto;
 import com.springboot.blog.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class CommentController {
     }
 
     @PutMapping("post/{postId}/comments/{id}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Long id, @PathVariable Long postId,@Valid @RequestBody CommentDto commentDto) {
+    public ResponseEntity<CommentDto> updateComment(@PathVariable Long id, @PathVariable Long postId, @Valid @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.updateComment(id, postId, commentDto), HttpStatus.OK);
     }
 

@@ -22,6 +22,7 @@ public class Post {
     private String description;
     @Column(name = "content", nullable = false)
     private String content;
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
+    @Column(name = "post_id", nullable = false)
     private Set<Comment> comments = new HashSet<>();
 }
