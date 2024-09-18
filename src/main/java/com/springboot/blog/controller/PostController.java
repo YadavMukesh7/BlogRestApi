@@ -1,10 +1,10 @@
 package com.springboot.blog.controller;
-
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.Impl.ImageService;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstant;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,17 +20,20 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PostController {
     private final PostService postService;
     private final ImageService imageService;
 
-    @PostMapping("api/v1/post")
+    @PostMapping("/api/v1/post")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto, HttpServletRequest request) {
+        System.out.println("This is header"+request.getHeaderNames());
+        System.out.println(request.getHeader("Authorization"));
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("api/v1/post")
+    @GetMapping("/api/v1/post")
     public ResponseEntity<PostResponse> getAllPost(@RequestParam(name = "pageNo", defaultValue = AppConstant.DEFAULT_PAGE_NUMBER, required = false) int pageNo, @RequestParam(name = "pageSize", defaultValue = AppConstant.DEFAULT_PAGE_SIZE, required = false) int pageSize, @RequestParam(name = "sortBy", defaultValue = AppConstant.DEFAULT_SORT_BY, required = false) String sortBy, @RequestParam(name = "sortDir", defaultValue = AppConstant.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
 
         return new ResponseEntity<>(postService.getAllPosts(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
@@ -77,7 +80,7 @@ public class PostController {
     @DeleteMapping("/api/v1/post/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") Long id) {
         postService.deletePostById(id);
-        return new ResponseEntity<>("Post deleted success fully", HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     @ResponseStatus(value = HttpStatus.OK)

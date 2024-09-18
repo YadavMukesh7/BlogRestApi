@@ -1,12 +1,16 @@
 package com.springboot.blog.payload;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostDto {
     private Long id;
     @NotEmpty(message = "Post should not be empty")
